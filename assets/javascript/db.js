@@ -3,6 +3,8 @@
 // db.js - to interface with firebase databae
 // January 12, 2019
     
+// https://console.firebase.google.com/project/healthysearch-48e3f/database/healthysearch-48e3f/data/
+
 // Initialize Firebase
 
 var config = {
@@ -15,132 +17,100 @@ var config = {
   };
  
 firebase.initializeApp(config);
+
 database = firebase.database();
- 
-// Global Variables
-var counter = 1;
-var minutesAway = 0;
-var nextArrival = "";
 
-var train = {
-      trainName:"",
-      destination:"",
-      startTime:"",
-      frequency:0,
+var user = {
+      userName:"",
+      userFirstName:"",
+      userLastName:"",
+      userEmail:"",
+      userCell:"",
+      userZip:""
 }
 
-$("#btnAddTrain").on("click", function(event)
-{
-  event.preventDefault();
-  
-  train.trainName = $("#txtTrainName").val().trim();
-  if (train.trainName.length === 0)
-  {
-    alert("Pleas enter train name.");
-    return;
-  }
-  train.destination = $("#txtDestination").val().trim();
-  if (train.destination.length === 0)
-  {
-    alert("Pleas enter destination.");
-    return;
-  }
-
-  train.startTime = $("#txtFirstTrainTime").val().trim();
-  if (train.startTime.length === 0)
-  {
-    alert("Pleas enter start time in HH:MM format.");
-    return;
-  }
-  var startTimeConverted = moment(train.startTime, "HH:mm");
-  if (startTimeConverted.isValid() === false)
-  {
-    alert("Pleas enter start time in HH:MM format.");
-    return;
-  }
-  
-  train.frequency = $("#txtFrequency").val().trim();
-  if (train.frequency.length === 0)
-  {
-    alert("Pleas enter frequency in number format (e.g. 30)");
-    return;
-  }
-  if (isNaN(train.frequency))
-  {
-    alert("Pleas enter frequency in number format (e.g. 30)");
-    return;
-  }
-
-  database.ref("/schedule").push(train);  
-})
-
-function calculateNextTrainDetails()
-{
-  // initialize variabes
-  minutesAway = 0;
-  nextArrival = "";
-
-  // First Time (pushed back 1 year to make sure it comes before current time)
-  var firstTimeConverted = moment(train.startTime, "HH:mm").subtract(1, "years");
-
-  // Current Time
-  var currentTime = moment();
-
-  // Difference between the times
-  var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-  
-  // Time apart (remainder)
-  var tRemainder = diffTime % train.frequency;
-
-  // Minute Until Train
-  minutesAway = train.frequency - tRemainder;
- 
-  // Next Train
-  var nextArrivalNonFormat = moment().add(minutesAway, "minutes");
-  nextArrival = moment(nextArrivalNonFormat).format("hh:mm A")
+var favorites = {
+  userName:"",
+  doctorName:"",
+  betterDoctorUID:""
 }
 
-function createTrainRecord()
+function addUser(userName, FirstName, LastName, Email, Cell, Zip)
 {
-  var rowRec = $("<tr>");
-  var th = $("<th>");
-  th.attr("scope","col");
-  th.text(counter);
-  var tdTrainName = $("<td>");
-  tdTrainName.text(train.trainName);
-  var tdDestination =  $("<td>");
-  tdDestination.text(train.destination);
-  var tdFrequency =  $("<td>");
-  tdFrequency.text(train.frequency);
-  var tdNextArrival =  $("<td>");
-  tdNextArrival.text(nextArrival);
-  var tdMinutesAway = $("<td>");
-  tdMinutesAway.text(minutesAway);
+  user.userName = userName;
+  user.userFirstName = FirstName;
+  user.userLastName = LastName;
+  user.userEmail = Email;
+  user.userCell = Cell;
+  user.userZip = Zip;
 
-  rowRec.append(th, tdTrainName, tdDestination, tdFrequency, tdNextArrival, tdMinutesAway);
-  $("tbody").append(rowRec);
-  counter = counter + 1;
-  nextArrival = "";
-  minutesAway = 0;
-  $("#txtTrainName").val('');
-  $("#txtDestination").val('');
-  $("#txtFirstTrainTime").val('');
-  $("#txtFrequency").val('');
+  database.ref("/users").push(user);  
 }
 
-// Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
-database.ref("/schedule").on("child_added", function(childSnapshot) {
+function addFavorite(userName, Doctor, DoctorUID)
+{
+  favorites.userName = userName;
+  favorites.doctorName = Doctor;
+  favorites.betterDoctorUID = DoctorUID;
 
-  // Make train object and add to the table
-  train.trainName = childSnapshot.val().trainName;
-  train.destination = childSnapshot.val().destination;
-  train.startTime = childSnapshot.val().startTime;
-  train.frequency = childSnapshot.val().frequency;
+  database.ref("/favorites").push(favorites);  
+}
 
-  calculateNextTrainDetails();
-  createTrainRecord();
+function populateData()
+{
+    addUser("hpandit", "Himanshu", "Pandit", "hp@rcb.com", "(111) 111-1111", "08816");
+    addUser("icohen", "Ilene", "Cohen", "ic@rcb.com", "(222) 222-2222", "07608");
+    addUser("dsires", "Dan", "Sires", "ds@rcb.com", "(333) 333-3333", "90210");
+    addUser("jduran", "Juan", "Duran", "jd@rcb.com", "(444) 444-4444", "06902");
 
-  // Handle the errors
-}, function(errorObject) {
-  console.log("Errors handled: " + errorObject.code);
-});
+    addFavorite("hpandit", "Dr. Scott Yager", "5bd1d56611167f74712548bbb968e9d8");
+    addFavorite("hpandit", "Dr. Dinesh Singal", "5bd1d566119292f74712548bbb968e9d8");
+    addFavorite("icohen", "Dr. Ralph Besho", "5bd1d56611167f74712548bbb968e9d8");
+    addFavorite("dsires", "Dr. John Doe", "5bd1d56611167f74712548bbb968e9d8");
+    addFavorite("jduran", "Dr. Miin Mathew", "5bd1d56611167f74712548bbb968e9d8"); 
+
+    var newKey = firebase.database().ref().child('favorites').push().key;
+    console.log(newKey);
+
+    favorites.userName = "hpandit";
+    favorites.doctorName = "New Doctor";
+    favorites.DoctorUID = "SomeUID";
+    var updates = {};
+    updates['/favorites/' + newKey + '/'] = favorites;
+    database.ref().update(updates);
+}
+
+function snapshotToArray(snapshot) {
+  var returnArr = [];
+
+  snapshot.forEach(function(childSnapshot) {
+      var item = childSnapshot.val();
+      item.key = childSnapshot.key;
+
+      returnArr.push(item);
+  });
+
+  return returnArr;
+};
+
+function getUserZip()
+{
+
+  var ref = firebase.database().ref("/users");
+
+  ref.on("value", function(snapshot) {
+     var users = [];
+     users = snapshotToArray(snapshot);
+     for (i=0; i<users.length; i++)
+     {
+      console.log(users[i].userName);
+      console.log(users[i].key);
+      database.ref("/users/" + users[i].key).remove();
+     }
+  }, function (error) {
+     console.log("Error: " + error.code);
+  });
+}
+
+getUserZip();
+//populateData();
