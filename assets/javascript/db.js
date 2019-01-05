@@ -60,8 +60,8 @@ function addFavorite(userName, Doctor, DoctorUID)
 
 function initialzeData()
 {
-    //database.ref("/users").empty();
-    //database.ref("/favorites").empty();
+    var rootRef = database.ref();
+    rootRef.remove();
 
     addUser("hpandit", "Himanshu", "Pandit", "hp@rcb.com", "(111) 111-1111", "08816");
     addUser("icohen", "Ilene", "Cohen", "ic@rcb.com", "(222) 222-2222", "07608");
@@ -82,12 +82,16 @@ function initialzeData()
     //var updates = {};
     //updates['/favorites/' + newKey + '/'] = favorites;
     //database.ref().update(updates);
+
+    $("#dataContainer").empty();
+    displayUsers();
+    displayFavorites();
 }
 
 function displayUsers()
 {
-    var ref = firebase.database().ref("/users");
 
+    var ref = firebase.database().ref("/users");
     ref.on("value", function(snapshot) {
       
       var users = [];
