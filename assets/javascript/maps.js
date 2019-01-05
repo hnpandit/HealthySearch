@@ -13,7 +13,7 @@ function displayMap(lng, lat)
     var platform = new H.service.Platform({
     'app_id': 'w7UvEiaWJksvqgcOea4n',
     'app_code': 'HqRyRkE_CPdtcF-Qo5lXdA',
-    'userHTTPS': true,
+    'useHTTPS': true,
     'useCIT': true
     });
 
