@@ -12,7 +12,8 @@ function displayMap(lng, lat)
     // Initialize platform
     var platform = new H.service.Platform({
     'app_id': 'w7UvEiaWJksvqgcOea4n',
-    'app_code': 'HqRyRkE_CPdtcF-Qo5lXdA'
+    'app_code': 'HqRyRkE_CPdtcF-Qo5lXdA',
+    'userHTTPS': 'true'
     });
 
     // Obtain the default map types from the platform object
