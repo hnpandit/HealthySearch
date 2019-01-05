@@ -12,8 +12,8 @@ var platform;
 var maptypes;
 var map;
 
-var longitude;
-var latitude;
+var longitude=0;
+var latitude=0;
 
 function displayMap()
 {
