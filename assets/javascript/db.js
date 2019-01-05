@@ -113,4 +113,4 @@ function getUserZip()
 }
 
 getUserZip();
-//populateData();
+populateData();
