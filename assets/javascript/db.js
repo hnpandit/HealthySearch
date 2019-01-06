@@ -4,6 +4,7 @@
 // January 12, 2019
     
 // https://console.firebase.google.com/project/healthysearch-48e3f/database/healthysearch-48e3f/data/
+// Reference: https://firebase.google.com/docs/database/web/read-and-write
 
 // Initialize Firebase
 
@@ -32,7 +33,7 @@ var user = {
 var favorites = {
   userName:"",
   doctorName:"",
-  betterDoctorUID:""
+  doctorID:""
 }
 
 function addUser(userName, FirstName, LastName, Email, Cell, Zip)
@@ -47,11 +48,11 @@ function addUser(userName, FirstName, LastName, Email, Cell, Zip)
   database.ref("/users").push(user);  
 }
 
-function addFavorite(userName, Doctor, DoctorUID)
+function addFavorite(userName, doctorName, doctorID)
 {
   favorites.userName = userName;
-  favorites.doctorName = Doctor;
-  favorites.betterDoctorUID = DoctorUID;
+  favorites.doctorName = doctorName;
+  favorites.doctorID = doctorID;
 
   database.ref("/favorites").push(favorites);  
 }
@@ -71,8 +72,6 @@ function initialzeData()
     addFavorite("icohen", "Dr. Ralph Besho", "5bd1d56611167f74712548bbb968e9d8");
     addFavorite("dsires", "Dr. John Doe", "5bd1d56611167f74712548bbb968e9d8");
     addFavorite("jduran", "Dr. Miin Mathew", "5bd1d56611167f74712548bbb968e9d8"); 
-
-   
 
     $("#dataContainer").empty();
     displayUsers();
@@ -201,7 +200,7 @@ $("#btnAddDoctor").on("click", function(event)
 
     favorites.userName = txtUserName;
     favorites.doctorName = "Dr" + txtDoctorID;
-    favorites.DoctorUID = txtDoctorID;
+    favorites.doctorID = txtDoctorID;
     var updates = {};
     updates['/favorites/' + newKey + '/'] = favorites;
     database.ref().update(updates);
@@ -210,4 +209,23 @@ $("#btnAddDoctor").on("click", function(event)
 $("#btnRemoveDoctor").on("click", function(event)
 {
   console.log("Remove Doctor button clicked");
+
+  var txtUserName = $("#txtUserName").val().trim();
+  var txtDoctorID = $("#txtDoctorID").val().trim();
+
+  var ref = firebase.database().ref("/favorites");
+
+  ref.on("value", function(snapshot) {
+     var favorites = [];
+     favorites = snapshotToArray(snapshot);
+     for (i=0; i<favorites.length; i++)
+     {
+      if ((txtUserName === favorites[i].userName) && (txtDoctorID === favorites[i].doctorID))
+      {
+        database.ref("/favorites/" + favorites[i].key).remove();
+      }
+     }
+  }, function (error) {
+     console.log("Error: " + error.code);
+  });
 })
