@@ -20,15 +20,13 @@ firebase.initializeApp(config);
 
 database = firebase.database();
 
-//database.ref("/data").set("Test");  
-
 var user = {
-      userName:"",
-      userFirstName:"",
-      userLastName:"",
-      userEmail:"",
-      userCell:"",
-      userZip:""
+  userName:"",
+  userFirstName:"",
+  userLastName:"",
+  userEmail:"",
+  userCell:"",
+  userZip:""
 }
 
 var favorites = {
@@ -74,14 +72,7 @@ function initialzeData()
     addFavorite("dsires", "Dr. John Doe", "5bd1d56611167f74712548bbb968e9d8");
     addFavorite("jduran", "Dr. Miin Mathew", "5bd1d56611167f74712548bbb968e9d8"); 
 
-    //var newKey = firebase.database().ref().child('favorites').push().key;
-
-    //favorites.userName = "hpandit";
-    //favorites.doctorName = "New Doctor";
-    //favorites.DoctorUID = "SomeUID";
-    //var updates = {};
-    //updates['/favorites/' + newKey + '/'] = favorites;
-    //database.ref().update(updates);
+   
 
     $("#dataContainer").empty();
     displayUsers();
@@ -90,10 +81,9 @@ function initialzeData()
 
 function displayUsers()
 {
-
     var ref = firebase.database().ref("/users");
-    ref.on("value", function(snapshot) {
-      
+    ref.on("value", function(snapshot) 
+    {  
       var users = [];
       users = snapshotToArray(snapshot);
       $("#dataContainer").append("Displaying Users" + "<br>");
@@ -111,8 +101,8 @@ function displayFavorites()
 {
     var ref = firebase.database().ref("/favorites");
 
-    ref.on("value", function(snapshot) {
-      
+    ref.on("value", function(snapshot) 
+    {  
       var favorites = [];
       favorites = snapshotToArray(snapshot);
       $("#dataContainer").append("Displaying User Favorites" + "<br>");
@@ -127,6 +117,7 @@ function displayFavorites()
 }
 
 function snapshotToArray(snapshot) {
+  
   var returnArr = [];
 
   snapshot.forEach(function(childSnapshot) {
@@ -139,6 +130,36 @@ function snapshotToArray(snapshot) {
   return returnArr;
 };
 
+function login(txtUserName, txtPassword)
+{
+    console.log("login module called" + txtUserName + "P " + txtPassword);
+    var ref = firebase.database().ref("/users");
+    var userFound = false;
+
+    ref.on("value", function(snapshot) 
+    {  
+      var users = [];
+      users = snapshotToArray(snapshot);
+      for (i=0; i<users.length; i++)
+      {
+        if (txtUserName === users[i].userName)
+        {
+            if (txtPassword === "password")
+            {
+              userFound = true;
+              console.log("login is good.");
+              return true;
+              console.log("This should not print.");
+            }
+        }
+      }
+      }, function (error) {
+        console.log("Error: " + error.code);
+        return false;
+    });
+    return false;
+}
+
 $("#initializeDatabase").on("click", function(event)
 {
   $("#dataContainer").empty();
@@ -149,4 +170,44 @@ $("#initializeDatabase").on("click", function(event)
 $("#populateDatabase").on("click", function(event)
 {
   initialzeData();
+})
+
+$("#btnLogin").on("click", function(event)
+{
+  console.log("Login button clicked");
+  // Get User Input
+  var txtUserName = $("#txtUserName").val().trim();
+  var txtPassword = $("#txtPassword").val().trim();
+
+  if (login(txtUserName, txtPassword) === true)
+  {
+    console.log("Login successful");
+    // We can change Login button to say Logout user
+  }
+  else
+  {
+    console.log("Login failure");
+  }
+})
+
+$("#btnAddDoctor").on("click", function(event)
+{
+    console.log("Add Doctor button clicked");
+
+    var txtUserName = $("#txtUserName").val().trim();
+    var txtDoctorID = $("#txtDoctorID").val().trim();
+
+    var newKey = firebase.database().ref().child('favorites').push().key;
+
+    favorites.userName = txtUserName;
+    favorites.doctorName = "Dr" + txtDoctorID;
+    favorites.DoctorUID = txtDoctorID;
+    var updates = {};
+    updates['/favorites/' + newKey + '/'] = favorites;
+    database.ref().update(updates);
+})
+
+$("#btnRemoveDoctor").on("click", function(event)
+{
+  console.log("Remove Doctor button clicked");
 })

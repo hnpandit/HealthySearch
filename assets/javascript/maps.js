@@ -45,9 +45,6 @@ $("#showMap").on("click", function(event)
   // Get User Input
   longitude = $("#txtLongitude").val().trim();
   latitude = $("#txtLatitude").val().trim();
-
-  console.log("Longitude:" + longitude);
-  console.log("Latitude:" + latitude);
   
   $("#mapContainer").empty();
   $("#txtLongitude").val('');

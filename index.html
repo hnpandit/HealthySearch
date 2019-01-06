@@ -39,22 +39,16 @@
   <!-- Train Scheduler -->
   <div class="container">
 
-    <!-- Jumbotron -->
-    <div class="jumbotron" style="background-color:red; color:navajowhite; height:150 px;">
-      <div class="row" style="text-align: center;">
-            <div class="col-md-6">
-                <img src='assets/images/doctor-crew.jpeg' style="height: 150px;">
-            </div>
-            <div class="col-md-6">
-              <h3 class="text-left">RCB Project 1 Healthy Search</h3>
-              <h3 class="text-left">Your Health @ Your FingerTip!</h3>
-              <h3 class="text-left">Ilene, Dan, Juan, Himanshu</h3>
-            </div>
+
+    <div class="row">
+      <div class="col-md-12" style="text-align:center;">
+        <h3>RCB Project 1 Healthy Search. Your Health @ Your FingerTip! <br> Ilene, Dan, Juan, Himanshu</h3>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-12">
+        <br>
         This is driver for maps api. Please enter Longitude and Latitude and Click Show Map.<br>
         Example for 300 Atrium Drive: Latitude: 40.535474, Longitude: -74.521034 <br>
         https://developer.mapquest.com/documentation/tools/latitude-longitude-finder/
@@ -75,10 +69,10 @@
 
         <div class="row" style="text-align:left;">
           <div class="col-md-12">  
-            <span>Username: <input class="mypanel" type="text" id="txtUserName"> Password: <input class="mypanel" type="text" id="txtPassword"><input class="mypanel" type="submit" class="btn btn-default" id="showMap" value="Login"><input class="mypanel" type="submit" class="btn btn-default" id="removeMe" value="Remove Me"></span>
+            <span>Username: <input class="mypanel" type="text" id="txtUserName"> Password: <input class="mypanel" type="text" id="txtPassword"><input class="mypanel" type="submit" class="btn btn-default" id="btnLogin" value="Login"></span>
           </div>
           <div class="col-md-12">  
-            <span>Username: <input class="mypanel" type="text" id="txtUserName"> Doctor UID: <input class="mypanel" type="text" id="txtPassword"><input class="mypanel" type="submit" class="btn btn-default" id="showMap" value="Add Doctor"><input class="mypanel" type="submit" class="btn btn-default" id="removeMe" value="Remove Doctor"></span>
+            <span>Doctor ID: <input class="mypanel" type="text" id="txtDoctorID"><input class="mypanel" type="submit" class="btn btn-default" id="btnAddDoctor" value="Add Doctor"><input class="mypanel" type="submit" class="btn btn-default" id="btnRemoveDoctor" value="Remove Doctor"></span>
           </div>
         </div>
         <div style="width: 200px; height: 400px" id="dataContainer"></div>
