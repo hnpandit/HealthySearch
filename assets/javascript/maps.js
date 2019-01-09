@@ -12,7 +12,7 @@ var platform;
 var maptypes;
 var map;
 
-function displayMap(longitude, latitude)
+function displayMap(mapDiv, longitude, latitude)
 {
     // Initialize platform
     platform = new H.service.Platform({
@@ -27,7 +27,7 @@ function displayMap(longitude, latitude)
 
     // Instantiate (and display) a map object:
     map = new H.Map (
-    document.getElementById('mapContainer'),
+    document.getElementById(mapDiv),
     maptypes.normal.map,
     {
       zoom: 10,
@@ -37,6 +37,8 @@ function displayMap(longitude, latitude)
 
 $("#showMap").on("click", function(event)
 {
+  var mapDiv = "mapContainer";
+
   event.preventDefault();
 
   // Get User Input
@@ -46,5 +48,5 @@ $("#showMap").on("click", function(event)
   $("#mapContainer").empty();
   $("#txtLongitude").val('');
   $("#txtLatitude").val('');
-  displayMap(longitude, latitude);
+  displayMap(mapDiv, longitude, latitude);
 })
