@@ -12,10 +12,7 @@ var platform;
 var maptypes;
 var map;
 
-var longitude=0;
-var latitude=0;
-
-function displayMap()
+function displayMap(longitude, latitude)
 {
     // Initialize platform
     platform = new H.service.Platform({
@@ -49,5 +46,5 @@ $("#showMap").on("click", function(event)
   $("#mapContainer").empty();
   $("#txtLongitude").val('');
   $("#txtLatitude").val('');
-  displayMap();
+  displayMap(longitude, latitude);
 })

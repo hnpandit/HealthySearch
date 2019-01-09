@@ -1,0 +1,123 @@
+<!-- Rutgers Coding BootCamp - Full Stack Developer - Mon/Wed -->
+<!-- Project 1 - HealthySearch Ilene, Dan, Juan & Himanshu  -->
+<!-- January 12, 2019 -->
+
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>Project 1 - HealthySearch </title>
+
+  <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
+
+  <ink rel="stylesheet" type="text/css" href="//js.api.here.com/v3/3.0/mapsjs-ui.css"/>
+  
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Firebase Reference -->
+  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+
+  <!-- Moment.js Reference -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+  <!-- HERE maps API Referecen -->
+  <script src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
+  <script src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+  <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Train Scheduler -->
+  <div class="container">
+
+
+    <div class="row">
+      <div class="col-md-12" style="text-align:center;">
+        <h3>RCB Project 1 Healthy Search. Your Health @ Your FingerTip! <br> Ilene, Dan, Juan, Himanshu</h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <br>
+        This is driver for maps api. Please enter Longitude and Latitude and Click Show Map.<br>
+        Example for 300 Atrium Drive: Latitude: 40.535474, Longitude: -74.521034 <br>
+        https://developer.mapquest.com/documentation/tools/latitude-longitude-finder/
+        <div class="row" style="text-align:left;">
+          <div class="col-md-12">  
+            <span>Latitude: <input class="mypanel" type="text" id="txtLatitude"> Longitude: <input class="mypanel" type="text" id="txtLongitude"><input class="mypanel" type="submit" class="btn btn-default" id="showMap" value="Show Map"></span>
+          </div>
+        </div>
+        <div style="width: 200px; height: 200px" id="mapContainer"></div>
+      </div>
+      <div class="col-md-12">
+        This is driver for firebase api. 
+        <div class="row" style="text-align:left;">
+          <div class="col-md-12">  
+            <span><input class="mypanel" type="submit" class="btn btn-default" id="populateDatabase" value="Populate Data"><input class="mypanel" type="submit" class="btn btn-default" id="initializeDatabase" value="Display Data"></span>
+          </div>
+        </div>
+
+        <div class="row" style="text-align:left;">
+          <div class="col-md-12">  
+            <span>Username: <input class="mypanel" type="text" id="txtUserName"> Password: <input class="mypanel" type="text" id="txtPassword"><input class="mypanel" type="submit" class="btn btn-default" id="btnLogin" value="Login"></span>
+          </div>
+          <div class="col-md-12">  
+            <span>Doctor ID: <input class="mypanel" type="text" id="txtDoctorID"><input class="mypanel" type="submit" class="btn btn-default" id="btnAddDoctor" value="Add Doctor"><input class="mypanel" type="submit" class="btn btn-default" id="btnRemoveDoctor" value="Remove Doctor"></span>
+          </div>
+        </div>
+        <div style="width: 200px; height: 400px" id="dataContainer"></div>
+      </div>
+      <div class="col-md-12">
+       <!-- Entry Form -->
+       <form>
+        <div class="form-group">
+          <label for="train-name-input">First Name</label>
+          <input class="form-control" id="txtTrainName" type="text">
+        </div>
+        <div class="form-group">
+          <label for="destination-input">Last Name</label>
+          <input class="form-control" id="txtDestination" type="text">
+        </div>
+        <div class="form-group">
+          <label for="first-train-time-input">User Name</label>
+          <input class="form-control" id="txtFirstTrainTime" type="text">
+        </div>
+        <div class="form-group">
+          <label for="frequency-input">Email</label>
+          <input class="form-control" id="txtFrequency" type="text">
+        </div>
+        <div class="form-group">
+          <label for="frequency-input">Cell</label>
+          <input class="form-control" id="txtFrequency" type="text">
+        </div>
+        <button class="btn btn-primary float-left" id="btnAddTrain">Register Me</button>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <hr>
+        @Project1 Group, Rutgers Coding Bootcamp 2018-2019.
+        <hr>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Cutom JavaScript -->
+  <script src="assets/javascript/db.js"></script>
+  <script src="assets/javascript/maps.js"></script>
+
+</body>
+
+</html>
